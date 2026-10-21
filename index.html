@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Interactive Map Tutorial - HCI Milestone 1</title>
+  <!-- Leaflet CSS/JS: official Leaflet 1.9.4 CDN -->
+  <link rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin="">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+          crossorigin=""></script>
+  <style>
+    body { margin: 0; font: 16px Arial, sans-serif; background: #f7f7f7; color: #202020; }
+    main { max-width: 1000px; margin: 24px auto; padding: 0 18px; }
+    h1 { margin-bottom: 6px; }
+    p { margin-top: 0; }
+    #map { height: 560px; border: 1px solid #999; }
+    .note { margin-top: 12px; color: #555; font-size: 14px; }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Interactive Map Tutorial</h1>
+    <p>HCI Milestone 1 - exploring the map features for a future hands-free map.</p>
+    <div id="map" aria-label="Interactive map of Washington, DC"></div>
+    <p class="note">Try zooming, dragging the map, clicking the marker, or clicking anywhere on the map.</p>
+  </main>
+  <script>
+    // Adapted from the official Leaflet Quick Start Guide:
+    // https://leafletjs.com/examples/quick-start/
+    const map = L.map('map').setView([38.8895, -77.0353], 13);
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    L.marker([38.8895, -77.0353]).addTo(map)
+      .bindPopup('<b>Example destination</b><br>Washington Monument area')
+      .openPopup();
+
+    L.circle([38.8977, -77.0365], {
+      radius: 350,
+      color: '#2462a0',
+      fillColor: '#468dd0',
+      fillOpacity: 0.18
+    }).addTo(map).bindPopup('Example search area');
+
+    const clickPopup = L.popup();
+    map.on('click', function (event) {
+      const lat = event.latlng.lat.toFixed(4);
+      const lng = event.latlng.lng.toFixed(4);
+      clickPopup.setLatLng(event.latlng)
+        .setContent('You clicked: ' + lat + ', ' + lng)
+        .openOn(map);
+    });
+  </script>
+</body>
+</html>
